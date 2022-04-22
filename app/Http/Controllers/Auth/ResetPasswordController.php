@@ -72,7 +72,7 @@ class ResetPasswordController extends Controller
     {       
 
         
-                DB::table('users')
+                DB::table('tw_usuarios')
                 ->where('email',$request->email)
                 ->update(['password' => bcrypt($request->password)]);
            

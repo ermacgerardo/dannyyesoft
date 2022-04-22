@@ -39,13 +39,15 @@ class AuthController extends Controller {
             'password' => 'required|string',
             'remember_me' => 'boolean'
         ]);
-        $username = request('email');
-        $email = null;
-        $password = request('password');
-        $queryUser = DB::select("select email from users where username=upper(:userName) or email=:userName", ['userName' => $username]);
-        foreach ($queryUser as $qu) {
-            $email = $qu->email;
-        }
+        $email = $request->email;
+        
+        $password = $request->password;
+        
+        
+//        $queryUser = DB::select("select email from tw_usuarios where username=upper(:userName) or email=:userName", ['userName' => $username]);
+//        foreach ($queryUser as $qu) {
+//            $email = $qu->email;
+//        }
 
         $credentials = ["email" => $email, "password" => $password];
 

@@ -20,9 +20,12 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
-        'password',
+        'S_Nombre',
+        'S_Apellidos',
+        'S_Activo',
+        
     ];
 
     /**
@@ -43,4 +46,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    public function corporativos()
+    {
+        return $this->hasMany(TwCorporativo::class,'tw_usuarios_id', 'id');
+    }
 }

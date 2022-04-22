@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class TwCorporativo extends Model
 {
     use HasFactory;
+    public function user()
+    {
+        return $this->belongsTo(User::class,'tw_usuarios_id','id');
+    }
 }
