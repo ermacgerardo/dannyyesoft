@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TwCorporativo;
 use App\Http\Requests\StoreTwCorporativoRequest;
 use App\Http\Requests\UpdateTwCorporativoRequest;
-
+use Exception;
+use App\Traits\GlobalTrait;
 class TwCorporativoController extends Controller
 {
     /**
@@ -15,7 +16,13 @@ class TwCorporativoController extends Controller
      */
     public function index()
     {
-        //
+        
+        $corporativos = TwCorporativo::all();
+        $data['corporativos']=$corporativos;
+        $code=200;
+        $exceptions=null;
+        
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -37,6 +44,14 @@ class TwCorporativoController extends Controller
     public function store(StoreTwCorporativoRequest $request)
     {
         //
+        $input = $request->all();
+        
+        $corporativo = TwCorporativo::create($input);
+        
+        $data['corporativos']=$corporativo;
+        $code=201;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -45,9 +60,16 @@ class TwCorporativoController extends Controller
      * @param  \App\Models\TwCorporativo  $twCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function show(TwCorporativo $twCorporativo)
+    //public function show(TwCorporativo $twCorporativo)
+    public function show($id)
     {
-        //
+        
+        $corporativo = TwCorporativo::find($id);
+        
+        $data['corporativos']=$corporativo;
+        $code=200;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -68,9 +90,14 @@ class TwCorporativoController extends Controller
      * @param  \App\Models\TwCorporativo  $twCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTwCorporativoRequest $request, TwCorporativo $twCorporativo)
+    public function update(UpdateTwCorporativoRequest $request, $id)
     {
-        //
+        $corporativo = TwCorporativo::find($id);
+        $corporativo->update($request->all());
+        $data['corporativos']=$corporativo;
+        $code=200;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -79,8 +106,15 @@ class TwCorporativoController extends Controller
      * @param  \App\Models\TwCorporativo  $twCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TwCorporativo $twCorporativo)
+    //public function destroy(TwCorporativo $twCorporativo)
+    public function destroy($id)
     {
-        //
+        
+        $corporativo = TwCorporativo::find($id);
+        $data['corporativos']=$corporativo;
+        $corporativo->delete();
+        $code=200;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 }

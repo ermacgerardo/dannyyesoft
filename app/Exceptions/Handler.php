@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use App\Traits\GlobalTrait;
 
 class Handler extends ExceptionHandler
 {
@@ -34,8 +35,20 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
+        /*$this->reportable(function (Throwable $e) {
             //
+        });*/
+        //Retornando excepciones como JSON
+        $this->renderable(function (Throwable $e) {
+            //
+            //return response(['error' => $e->getMessage()], $e->getCode() ?: 400);
+            $data['msgError']=$e->getFile();
+            $exceptions['msgError']=$e->getMessage();
+            $code=$e->getCode();
+            
+            return GlobalTrait::responseJSON($data, $exceptions, $code);
+            
+            
         });
     }
 }
