@@ -17,8 +17,7 @@ class CreateTwDocumentosTable extends Migration
             $table->id();
             $table->string('S_Nombre',45);
             $table->boolean('N_Obligatorio')->default(1);
-            $table->string('S_Descripcion',2555)->unique()->nullable();
-            $table->timestamps();
+            $table->string('S_Descripcion',255)->unique()->nullable();
         });
     }
 

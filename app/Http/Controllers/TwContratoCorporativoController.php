@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TwDocumento;
-use App\Http\Requests\StoreTwDocumentoRequest;
-use App\Http\Requests\UpdateTwDocumentoRequest;
+use App\Models\TwContratoCorporativo;
+use App\Http\Requests\StoreTwContratoCorporativoRequest;
+use App\Http\Requests\UpdateTwContratoCorporativoRequest;
 use App\Traits\GlobalTrait;
-class TwDocumentoController extends Controller
+class TwContratoCorporativoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class TwDocumentoController extends Controller
      */
     public function index()
     {
-        $documentos = TwDocumento::all();
-        $data['documentos']=$documentos;
+        $contratos = TwContratoCorporativo::all();
+        $data['contratos_corporativo']=$contratos;
         $code=200;
         $exceptions=null;
         
@@ -36,16 +36,16 @@ class TwDocumentoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTwDocumentoRequest  $request
+     * @param  \App\Http\Requests\StoreTwContratoCorporativoRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTwDocumentoRequest $request)
+    public function store(StoreTwContratoCorporativoRequest $request)
     {
         $input = $request->all();
         
-        $documento = TwDocumento::create($input);
+        $contrato_corporativo = TwContratoCorporativo::create($input);
         
-        $data['documento']=$documento;
+        $data['contrato_corporativo']=$contrato_corporativo;
         $code=201;
         $exceptions=null;
         return GlobalTrait::responseJSON($data, $exceptions, $code);
@@ -54,16 +54,14 @@ class TwDocumentoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TwDocumento  $twDocumento
+     * @param  \App\Models\TwContratoCorporativo  $twContratoCorporativo
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $documento = TwDocumento::find($id);
+        $contrato_corporativo = TwContratoCorporativo::find($id);
         
-        $data['documento']=$documento::where('id','=',$id)
-                ->with("twDocumentosCorporativo")
-                ->first();;
+        $data['contrato_corporativo']=$contrato_corporativo;
         $code=200;
         $exceptions=null;
         return GlobalTrait::responseJSON($data, $exceptions, $code);
@@ -72,10 +70,10 @@ class TwDocumentoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TwDocumento  $twDocumento
+     * @param  \App\Models\TwContratoCorporativo  $twContratoCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function edit(TwDocumento $twDocumento)
+    public function edit(TwContratoCorporativo $twContratoCorporativo)
     {
         //
     }
@@ -83,15 +81,15 @@ class TwDocumentoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTwDocumentoRequest  $request
-     * @param  \App\Models\TwDocumento  $twDocumento
+     * @param  \App\Http\Requests\UpdateTwContratoCorporativoRequest  $request
+     * @param  \App\Models\TwContratoCorporativo  $twContratoCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTwDocumentoRequest $request, $id)
+    public function update(UpdateTwContratoCorporativoRequest $request, $id)
     {
-        $documento = TwDocumento::find($id);
-        $documento->update($request->all());
-        $data['documento']=$documento;
+        $contrato_corporativo = TwContratoCorporativo::find($id);
+        $contrato_corporativo->update($request->all());
+        $data['contrato_corporativo']=$contrato_corporativo;
         $code=200;
         $exceptions=null;
         return GlobalTrait::responseJSON($data, $exceptions, $code);
@@ -100,14 +98,14 @@ class TwDocumentoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TwDocumento  $twDocumento
+     * @param  \App\Models\TwContratoCorporativo  $twContratoCorporativo
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $documento = TwDocumento::find($id);
-        $data['documento']=$documento;
-        $documento->delete();
+        $contrato_corporativo = TwContratoCorporativo::find($id);
+        $data['contrato_corporativo']=$contrato_corporativo;
+        $contrato_corporativo->delete();
         $code=200;
         $exceptions=null;
         return GlobalTrait::responseJSON($data, $exceptions, $code);

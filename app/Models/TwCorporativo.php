@@ -4,7 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+//use App\Scopes\ActiveScope;
 
 class TwCorporativo extends Model
 {
@@ -25,4 +25,28 @@ class TwCorporativo extends Model
     {
         return $this->belongsTo(User::class,'tw_usuarios_id','id');
     }
+    
+    public function twEmpresasCoporativo()
+    {
+        return $this->hasMany(TwEmpresaCorporativo::class,'tw_corporativos_id', 'id');
+    }
+    public function twContactosCorporativo()
+    {
+        return $this->hasMany(TwContactoCorporativo::class,'tw_corporativos_id', 'id');
+    }
+    public function twContratosCorporativo()
+    {
+        return $this->hasMany(TwContratoCorporativo::class,'tw_corporativos_id', 'id');
+    }
+    public function twDocumentosCorporativo()
+    {
+        return $this->hasMany(TwDocumentoCorporativo::class,'tw_corporativos_id', 'id');
+    }
+//    protected static function boot()
+//    {
+//        parent::boot();
+//        static::addGlobalScope('active', function ($query) {
+//            return $query;
+//        });
+//    }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTwContactoCorporativoRequest extends FormRequest
+class UpdateTwContratoCorporativoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,9 @@ class StoreTwContactoCorporativoRequest extends FormRequest
     public function rules()
     {
         return [
-            'S_Nombre' => 'required|max:45',
-            'S_Puesto' => 'required|max:45',
-            'S_Comentarios' => 'max:255',
-            'S_TelefonoFijo' => 'max:12',
-            'S_TelefonoMovil' => 'max:12',
-            'S_Email' => 'required|max:45',
+            'D_FechaIncorporacion' => 'required|date',
+            'D_FechaFin' => 'required|date',
+            'S_URLContrato' => 'max:255|url',
             'tw_corporativos_id' => 'required|integer',
         ];
     }

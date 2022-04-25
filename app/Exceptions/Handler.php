@@ -35,17 +35,19 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        
         /*$this->reportable(function (Throwable $e) {
             //
         });*/
         //Retornando excepciones como JSON
         $this->renderable(function (Throwable $e) {
-            //
-            //return response(['error' => $e->getMessage()], $e->getCode() ?: 400);
+            
             $data['msgError']=$e->getFile();
             $exceptions['msgError']=$e->getMessage();
             $code=$e->getCode();
             
+            
+            //$code=400;
             return GlobalTrait::responseJSON($data, $exceptions, $code);
             
             

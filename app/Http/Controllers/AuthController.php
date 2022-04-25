@@ -10,6 +10,7 @@ use DB;
 use Session;
 use Exception;
 use App\Models\sesion;
+use App\Traits\GlobalTrait;
 
 class AuthController extends Controller {
     /**
@@ -40,10 +41,20 @@ class AuthController extends Controller {
             'remember_me' => 'boolean'
         ]);
         $email = $request->email;
-        
+
         $password = $request->password;
-        
-        
+
+        $data = null;
+        $exceptions = null;
+        $arrayAccessToken = ['usuarios'];
+        //Descomentar en caso de prueba
+        $arrayAccessToken = ['usuarios','corporativos',
+            'empresas-corporativos','contactos-corporativos','contratos-corporativos',
+            'documentos','documentos-corporativos'
+            ];
+         
+
+        //EN CASO DE PERMITIR LA AUTENTICACION CON USERNAME DESCOMENTAR
 //        $queryUser = DB::select("select email from tw_usuarios where username=upper(:userName) or email=:userName", ['userName' => $username]);
 //        foreach ($queryUser as $qu) {
 //            $email = $qu->email;
@@ -51,31 +62,42 @@ class AuthController extends Controller {
 
         $credentials = ["email" => $email, "password" => $password];
 
-        if (!Auth::attempt($credentials))
-            return response()->json([
-                        'message' => 'Unauthorized',
-                        'name' => '',
-                        'token' => ''
-                            ], 401);
+        if (!Auth::attempt($credentials)) {
+            throw new Exception('Unauthorized', 401);
+        }
 
-
-
-
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
+        $user = Auth::user();
+        if ($user->tw_rol_id == 1) {
+            array_push($arrayAccessToken, 'corporativos');
+            array_push($arrayAccessToken, 'empresas-corporativos');
+        } else if ($user->tw_rol_id == 2) {
+            array_push($arrayAccessToken, 'contactos-corporativos');
+            array_push($arrayAccessToken, 'contratos-corporativos');
+        } else if ($user->tw_rol_id == 3) {
+            array_push($arrayAccessToken, 'documentos');
+            array_push($arrayAccessToken, 'documentos-corporativos');
+        }
+        $tokenResult = $user->createToken('Personal Access Token', $arrayAccessToken);
         $token = $tokenResult->token;
-        if ($request->remember_me)
+        
+        if ($user->tw_rol_id == 1) {
             $token->expires_at = Carbon::now()->addWeeks(1);
+        } else if ($user->tw_rol_id == 2) {
+            $token->expires_at = Carbon::now()->addWeeks(2);
+        } else if ($user->tw_rol_id == 3) {
+            $token->expires_at = Carbon::now()->addYears(1);
+        }
+
+
         $token->save();
-        return response()->json([
-                    'message' => 'Authorized',
-                    'name' => Auth::user()->name,
-                    //'qr'=>Auth::user()->qr,
-                    //'access_token' => $tokenResult->accessToken,
-                    //'token_type' => 'Bearer',
-                    'token' => 'Bearer ' . $tokenResult->accessToken,
-                        //'expires_at' => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString()
-        ]);
+
+        $code = 200;
+
+        $data['user'] = $user;
+        $data['token'] = 'Bearer ' . $tokenResult->accessToken;
+
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
+        
     }
 
     /**

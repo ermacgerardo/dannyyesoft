@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TwDocumentoCorporativo;
 use App\Http\Requests\StoreTwDocumentoCorporativoRequest;
 use App\Http\Requests\UpdateTwDocumentoCorporativoRequest;
-
+use App\Traits\GlobalTrait;
 class TwDocumentoCorporativoController extends Controller
 {
     /**
@@ -15,7 +15,12 @@ class TwDocumentoCorporativoController extends Controller
      */
     public function index()
     {
-        //
+        $documentos = TwDocumentoCorporativo::all();
+        $data['documentos_corporativo']=$documentos;
+        $code=200;
+        $exceptions=null;
+        
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -36,7 +41,14 @@ class TwDocumentoCorporativoController extends Controller
      */
     public function store(StoreTwDocumentoCorporativoRequest $request)
     {
-        //
+        $input = $request->all();
+        
+        $documento_corporativo = TwDocumentoCorporativo::create($input);
+        
+        $data['documento_corporativo']=$documento_corporativo;
+        $code=201;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -45,9 +57,14 @@ class TwDocumentoCorporativoController extends Controller
      * @param  \App\Models\TwDocumentoCorporativo  $twDocumentoCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function show(TwDocumentoCorporativo $twDocumentoCorporativo)
+    public function show($id)
     {
-        //
+        $documento_corporativo = TwDocumentoCorporativo::find($id);
+        
+        $data['documento_corporativo']=$documento_corporativo;
+        $code=200;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -68,9 +85,14 @@ class TwDocumentoCorporativoController extends Controller
      * @param  \App\Models\TwDocumentoCorporativo  $twDocumentoCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTwDocumentoCorporativoRequest $request, TwDocumentoCorporativo $twDocumentoCorporativo)
+    public function update(UpdateTwDocumentoCorporativoRequest $request, $id)
     {
-        //
+        $documento_corporativo = TwDocumentoCorporativo::find($id);
+        $documento_corporativo->update($request->all());
+        $data['documento_corporativo']=$documento_corporativo;
+        $code=200;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -79,8 +101,13 @@ class TwDocumentoCorporativoController extends Controller
      * @param  \App\Models\TwDocumentoCorporativo  $twDocumentoCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TwDocumentoCorporativo $twDocumentoCorporativo)
+    public function destroy($id)
     {
-        //
+        $documento_corporativo = TwDocumentoCorporativo::find($id);
+        $data['documento_corporativo']=$documento_corporativo;
+        $documento_corporativo->delete();
+        $code=200;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 }

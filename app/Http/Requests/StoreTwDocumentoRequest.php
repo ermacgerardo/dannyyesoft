@@ -13,7 +13,7 @@ class StoreTwDocumentoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreTwDocumentoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'S_Nombre' => 'required|max:45',
+            'N_Obligatorio' => 'required|integer',
+            'S_Descripcion' => 'required|max:255',
+ 
         ];
     }
 }

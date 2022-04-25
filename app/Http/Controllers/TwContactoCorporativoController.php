@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TwContactoCorporativo;
 use App\Http\Requests\StoreTwContactoCorporativoRequest;
 use App\Http\Requests\UpdateTwContactoCorporativoRequest;
-
+use App\Traits\GlobalTrait;
 class TwContactoCorporativoController extends Controller
 {
     /**
@@ -15,7 +15,12 @@ class TwContactoCorporativoController extends Controller
      */
     public function index()
     {
-        //
+        $contactos = TwContactoCorporativo::all();
+        $data['contactos_corporativo']=$contactos;
+        $code=200;
+        $exceptions=null;
+        
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -36,7 +41,14 @@ class TwContactoCorporativoController extends Controller
      */
     public function store(StoreTwContactoCorporativoRequest $request)
     {
-        //
+        $input = $request->all();
+        
+        $contacto_corporativo = TwContactoCorporativo::create($input);
+        
+        $data['contacto_corporativo']=$contacto_corporativo;
+        $code=201;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -45,9 +57,14 @@ class TwContactoCorporativoController extends Controller
      * @param  \App\Models\TwContactoCorporativo  $twContactoCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function show(TwContactoCorporativo $twContactoCorporativo)
+    public function show($id)
     {
-        //
+        $contacto_corporativo = TwContactoCorporativo::find($id);
+        
+        $data['contacto_corporativo']=$contacto_corporativo;
+        $code=200;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -68,9 +85,14 @@ class TwContactoCorporativoController extends Controller
      * @param  \App\Models\TwContactoCorporativo  $twContactoCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTwContactoCorporativoRequest $request, TwContactoCorporativo $twContactoCorporativo)
+    public function update(UpdateTwContactoCorporativoRequest $request, $id)
     {
-        //
+        $contacto_corporativo = TwContactoCorporativo::find($id);
+        $contacto_corporativo->update($request->all());
+        $data['contacto_corporativo']=$contacto_corporativo;
+        $code=200;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -79,8 +101,13 @@ class TwContactoCorporativoController extends Controller
      * @param  \App\Models\TwContactoCorporativo  $twContactoCorporativo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TwContactoCorporativo $twContactoCorporativo)
+    public function destroy($id)
     {
-        //
+        $contacto_corporativo = TwContactoCorporativo::find($id);
+        $data['contacto_corporativo']=$contacto_corporativo;
+        $contacto_corporativo->delete();
+        $code=200;
+        $exceptions=null;
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 }

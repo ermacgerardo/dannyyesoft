@@ -6,7 +6,13 @@ use Exception;
 use Illuminate\Support\Facades\Config;
 use Auth;
 
-
+use App\Models\User;
+use App\Models\TwCorporativo;
+use App\Models\TwDocumento;
+use App\Models\TwDocumentoCorporativo;
+use App\Models\TwContratoCorporativo;
+use App\Models\TwContactoCorporativo;
+use App\Models\TwEmpresasCorporativo;
 
 trait GlobalTrait {
     
@@ -34,5 +40,46 @@ trait GlobalTrait {
                 "exceptions" => $exceptions,
                 "time_execution" => $time_execution
             ],$code ?: 400);
+    }
+    
+    public static function crearRegistros($numeroUsuarios){
+        
+        $users=User::factory()
+            ->count($numeroUsuarios)
+            //->hasCorporativos()
+            ->create();
+        
+        $users->each(function ($user) {
+            $documento=null;
+            $documentos= TwDocumento::factory()
+                ->count(1)
+            ->create();
+            
+            $documentos->each(function ($d) {
+                $documento=$d;
+            });
+            
+            $corporativos=$user->corporativos()
+                 ->saveMany(
+                         TwCorporativo::factory(['tw_usuarios_id'=>$user->id])
+                        ->count(1)
+                        ->hasTwDocumentosCorporativo(['tw_documentos_id'=>1])
+                         ->hasTwContratosCorporativo()
+                         ->hasTwContactosCorporativo()
+                         ->hasTwEmpresasCoporativo()
+                        ->create()
+                 );
+//            $corporativos->each(function ($corporativo) {
+//                $documento_corporativo=$corporativo->hasTwDocumentosCoporativo()
+//                        ->saveMany(
+//                                TwDocumentoCorporativo::factory(['tw_usuarios_id'=>$user->id])
+//                                ->count(1)
+//                                //->hasCorporativos()
+//                                ->create()
+//                        );
+//            });
+        });
+        
+ 
     }
 }

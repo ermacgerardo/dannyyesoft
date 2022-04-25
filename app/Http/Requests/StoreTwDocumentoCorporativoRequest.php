@@ -13,7 +13,7 @@ class StoreTwDocumentoCorporativoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StoreTwDocumentoCorporativoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'tw_corporativos_id' => 'required|integer',
+            'tw_documentos_id' => 'required|integer',
+            'S_ArchivoUrl' => 'max:255|url',
+            
+            
         ];
     }
 }

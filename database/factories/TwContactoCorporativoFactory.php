@@ -14,7 +14,12 @@ class TwContactoCorporativoFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'S_Nombre'=>$this->faker->unique()->name(),
+            'S_Puesto'=>$this->faker->jobTitle(),
+            'S_Comentarios'=>$this->faker->paragraph(),
+            'S_TelefonoFijo'=>$this->faker->text(12),//quizas sea mejor usar phoneNumber(), pero el tamaño del campo es limitado
+            'S_TelefonoMovil'=>$this->faker->text(12),//quizas sea mejor usar phoneNumber(), pero el tamaño del campo es limitado
+            'S_Email'=>$this->faker->email(),
         ];
     }
 }

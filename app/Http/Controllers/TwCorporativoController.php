@@ -7,8 +7,10 @@ use App\Http\Requests\StoreTwCorporativoRequest;
 use App\Http\Requests\UpdateTwCorporativoRequest;
 use Exception;
 use App\Traits\GlobalTrait;
+//use Laravel\Passport\Passport;
 class TwCorporativoController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -48,7 +50,7 @@ class TwCorporativoController extends Controller
         
         $corporativo = TwCorporativo::create($input);
         
-        $data['corporativos']=$corporativo;
+        $data['corporativo']=$corporativo;
         $code=201;
         $exceptions=null;
         return GlobalTrait::responseJSON($data, $exceptions, $code);
@@ -64,9 +66,16 @@ class TwCorporativoController extends Controller
     public function show($id)
     {
         
-        $corporativo = TwCorporativo::find($id);
+        $corporativo = TwCorporativo::where('id','=',$id)
+                ->with("twEmpresasCoporativo")
+                ->with("twContactosCorporativo")
+                ->with("twContratosCorporativo")
+                ->with("twDocumentosCorporativo")
+                ->first();
+        //$data['corporativo']=$corporativo->first()->with("twDocumentosCcorporativo")->get();
+        //$corporativo = TwCorporativo::find($id);
+        $data['corporativo']=$corporativo;
         
-        $data['corporativos']=$corporativo;
         $code=200;
         $exceptions=null;
         return GlobalTrait::responseJSON($data, $exceptions, $code);
@@ -94,7 +103,7 @@ class TwCorporativoController extends Controller
     {
         $corporativo = TwCorporativo::find($id);
         $corporativo->update($request->all());
-        $data['corporativos']=$corporativo;
+        $data['corporativo']=$corporativo;
         $code=200;
         $exceptions=null;
         return GlobalTrait::responseJSON($data, $exceptions, $code);
@@ -111,7 +120,7 @@ class TwCorporativoController extends Controller
     {
         
         $corporativo = TwCorporativo::find($id);
-        $data['corporativos']=$corporativo;
+        $data['corporativo']=$corporativo;
         $corporativo->delete();
         $code=200;
         $exceptions=null;

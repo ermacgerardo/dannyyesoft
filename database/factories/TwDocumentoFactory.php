@@ -14,7 +14,10 @@ class TwDocumentoFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'S_Nombre' => $this->faker->unique()->word(),
+            'N_Obligatorio' => $this->faker->numberBetween(0,1),
+            'S_Descripcion' => $this->faker->unique()->paragraph(),
+            
         ];
     }
 }

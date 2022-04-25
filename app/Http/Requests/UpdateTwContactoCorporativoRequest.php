@@ -13,7 +13,7 @@ class UpdateTwContactoCorporativoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class UpdateTwContactoCorporativoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'S_Nombre' => 'required|max:45',
+            'S_Puesto' => 'required|max:45',
+            'S_Comentarios' => 'max:255',
+            'S_TelefonoFijo' => 'max:12',
+            'S_TelefonoMovil' => 'max:42',
+            'S_Email' => 'required|max:45',
+            'tw_corporativos_id' => 'required|integer',
         ];
     }
 }
