@@ -48,10 +48,10 @@ class AuthController extends Controller {
         $exceptions = null;
         $arrayAccessToken = ['usuarios'];
         //Descomentar en caso de prueba
-        $arrayAccessToken = ['usuarios','corporativos',
-            'empresas-corporativos','contactos-corporativos','contratos-corporativos',
-            'documentos','documentos-corporativos'
-            ];
+//        $arrayAccessToken = ['usuarios','corporativos',
+//            'empresas-corporativos','contactos-corporativos','contratos-corporativos',
+//            'documentos','documentos-corporativos'
+//            ];
          
 
         //EN CASO DE PERMITIR LA AUTENTICACION CON USERNAME DESCOMENTAR
