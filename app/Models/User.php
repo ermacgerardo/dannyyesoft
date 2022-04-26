@@ -25,7 +25,8 @@ class User extends Authenticatable
         'S_Nombre',
         'S_Apellidos',
         'S_Activo',
-        
+        'password',
+        'tw_rol_id'
     ];
 
     /**

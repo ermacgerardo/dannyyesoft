@@ -107,9 +107,14 @@ class AuthController extends Controller {
      */
     public function logout(Request $request) {
         $request->user()->token()->revoke();
-        return response()->json([
-                    'message' => 'Successfully logged out'
-        ]);
+        
+        
+        $code = 200;
+
+        $exceptions=null;
+        $data['msgSuccess'] = 'Desautenticado exitosamente';
+
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
     }
 
     /**
@@ -118,8 +123,41 @@ class AuthController extends Controller {
      * @return [json] user object
      */
     public function user(Request $request) {
+        
+        $code = 200;
 
-        return response()->json($request->user());
+        $exceptions=null;
+        $data['user'] = $request->user();
+
+        return GlobalTrait::responseJSON($data, $exceptions, $code);
+
+    }
+    
+    public function signup(Request $request)
+    {
+        //throw new Exception('No Implementado: Al parecer este servicio no es necesario para la prueba');
+        
+        $request->validate([
+            'username' => 'required|string',
+            'email' => 'required|string|email',
+            'password' => 'required|string|confirmed',
+            'S_Nombre' => 'required|string',
+            'S_Apellidos' => 'required|string',
+            'tw_rol_id' => 'required|integer',
+            
+            
+        ]);
+        $user = new User([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'S_Nombre' => $request->S_Nombre,
+            'S_Apellidos' => $request->S_Apellidos,
+            'tw_rol_id' => $request->tw_rol_id,
+        ]);        $user->save();        
+        return response()->json([
+            'message' => 'Successfully created user!'
+        ], 201);
     }
 
 }

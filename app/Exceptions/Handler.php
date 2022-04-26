@@ -39,6 +39,8 @@ class Handler extends ExceptionHandler
         /*$this->reportable(function (Throwable $e) {
             //
         });*/
+        
+        //TODO: codigos de exception que no son html, arrojan error se deben reinptretar esos codigos
         //Retornando excepciones como JSON
         $this->renderable(function (Throwable $e) {
             

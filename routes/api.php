@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'auth'], function () {
 
 	Route::post('/login', [AuthController::class, 'login']);//->middleware('throttle:5,60');
+        Route::post('/signup', [AuthController::class, 'signup']);
 
 	Route::group(['middleware' => 'auth:api'], function() {
 
@@ -43,6 +44,15 @@ Route::group(['prefix' => 'auth'], function () {
     });
 });
 
+Route::group([    
+    'namespace' => 'App\Http\Controllers\Auth',    
+    'middleware' => 'api',    
+    'prefix' => 'password'
+], function () {    
+    Route::post('create', 'PasswordResetController@create');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
+});
 
 //Route::resource('corporativos', TwCorporativoController::class)->middleware(['auth:api', 'scope:corporativos']);
 
